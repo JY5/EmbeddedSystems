@@ -1,15 +1,9 @@
 // #ifndef MQTT_H
 // #define MQTT_H
 
-// #include "pico/stdlib.h"
+// void mqtt_connect(uint green_led_pin, uint red_led_pin);  // Connect to MQTT broker and subscribe
+// void mqtt_publish(const char *message);                   // Publish a message to the MQTT broker
+// void mqtt_check_messages();                               // Check for incoming MQTT messages
+// void connect_wifi(const char *ssid, const char *password); // Connect to Wi-Fi
 
-// // Connect to the Wi-Fi network with the given SSID and password
-// void connect_wifi(const char* ssid, const char* password);
-
-// // Send audio data to the host via MQTT
-// void send_audio_to_host(uint16_t audio_sample);
-
-// // Receive feedback from the host (returns true if correct, false if incorrect)
-// bool receive_feedback_from_host(void);
-
-// #endif
+// #endif // MQTT_H
