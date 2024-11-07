@@ -1,63 +1,38 @@
 #include "pico/stdlib.h"
-#include "mqtt.h"
-#include "microphone.h"  // Include your microphone functions
-#include <stdio.h>        // Required for printf
+#include "led.h"
+#include "button.h"
+#include "microphone.h"  // Include microphone functions
+#include <stdio.h>
 
-#define GREEN_LED_GPIO 15  // GPIO pin for the green LED
-#define RED_LED_GPIO 16    // GPIO pin for the red LED
-#define BUTTON_GPIO 14     // GPIO pin for the button
-#define MIC_ADC_GPIO 26    // GPIO pin for microphone (ADC channel 0)
-
-// Function to initialize GPIO pins
+// Function to initialize GPIO for RGB LED and button
 void init_gpio() {
-    gpio_init(GREEN_LED_GPIO);
-    gpio_set_dir(GREEN_LED_GPIO, GPIO_OUT);
-    gpio_put(GREEN_LED_GPIO, false);  // Turn off green LED initially
-
-    gpio_init(RED_LED_GPIO);
-    gpio_set_dir(RED_LED_GPIO, GPIO_OUT);
-    gpio_put(RED_LED_GPIO, false);    // Turn off red LED initially
-
-    gpio_init(BUTTON_GPIO);
-    gpio_set_dir(BUTTON_GPIO, GPIO_IN);
-    gpio_pull_up(BUTTON_GPIO);  // Pull-up resistor for button
+    init_rgb_led();  // Initialize RGB LED pins
+    init_button();   // Initialize button with advanced detection
 }
 
 int main() {
-    stdio_init_all();  // Initialize standard input/output for print statements
+    stdio_init_all();      // Initialize standard input/output
 
-    // Initialize GPIO pins for LEDs, button, and microphone
+    // Initialize GPIO for LEDs and button
     init_gpio();
-    init_microphone(MIC_ADC_GPIO);  // Initialize microphone with GPIO pin
-
-    // // Connect to Wi-Fi and MQTT broker
-    // connect_wifi("your_SSID", "your_PASSWORD");  // Replace with actual Wi-Fi credentials
-    // mqtt_connect();
+    init_microphone(26);   // Initialize microphone on GPIO 26
 
     while (true) {
-        // Check if the button is pressed (active-low)
-        if (gpio_get(BUTTON_GPIO) == 0) {
-            gpio_put(GREEN_LED_GPIO, true);  // Turn on green LED
-            // mqtt_publish("button pressed");  // Send MQTT message
-            sleep_ms(100);                   // Debounce delay
+        // Check for button press types
+        check_button();
 
-            // Wait until the button is released
-            while (gpio_get(BUTTON_GPIO) == 0) {
-                sleep_ms(100);  // Debounce delay
-            }
-
-            gpio_put(GREEN_LED_GPIO, false); // Turn off green LED when released
+        // Set LED color based on button press types (examples)
+        if (is_button_pressed(BUTTON_GPIO)) {
+            set_rgb_color(128, 0, 128);  // Purple for initial button press
+        } else {
+            set_rgb_color(0, 0, 0);  // Turn off LED when button is not pressed
         }
 
-        // Read and print an audio sample from the microphone
+        // Read and print audio sample from microphone
         uint16_t audio_sample = get_audio_sample();
         printf("Audio sample: %u\n", audio_sample);
 
-        // // Check for MQTT messages (feedback)
-        // mqtt_check_messages(GREEN_LED_GPIO, RED_LED_GPIO);
-
-        // Add a delay to control the rate of microphone sampling and message checking
-        sleep_ms(100);  // Adjust as needed to balance sampling and responsiveness
+        sleep_ms(100);  // Adjust delay as needed
     }
 
     return 0;
