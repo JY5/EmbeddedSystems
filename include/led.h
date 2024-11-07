@@ -3,10 +3,10 @@
 
 #include "pico/stdlib.h"
 
-// Initialize an LED connected to the specified GPIO pin
-void init_led(uint gpio);
+// Initialize RGB LED
+void init_rgb_led(void); // Declare init_rgb_led
 
-// Turn the LED on or off (true = on, false = off)
-void set_led(uint gpio, bool state);
+// Set RGB LED color
+void set_rgb_color(uint8_t red, uint8_t green, uint8_t blue); // Declare set_rgb_color
 
 #endif

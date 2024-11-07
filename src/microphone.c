@@ -1,6 +1,7 @@
 #include "hardware/adc.h"
 #include "pico/stdlib.h"
 #include <stdint.h>
+#include "microphone.h"
 
 // Define buffer sizes
 #define SAMPLE_RATE 8000            // Sample rate in Hz (8 kHz for basic audio)

@@ -1,18 +1,4 @@
-# == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
-if(WIN32)
-    set(USERHOME $ENV{USERPROFILE})
-else()
-    set(USERHOME $ENV{HOME})
-endif()
-set(sdkVersion 2.0.0)
-set(toolchainVersion 13_2_Rel1)
-set(picotoolVersion 2.0.0)
-set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
-if (EXISTS ${picoVscode})
-    include(${picoVscode})
-endif()
-# ====================================================================================
-# == DO NOT EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
 else()
@@ -46,14 +32,14 @@ add_executable(EmbeddedSystems
     src/main.c           # Main control logic
     src/button.c         # Button handler
     src/led.c            # LED control
-    src/microphone.c     # Microphone input handler
-    src/mqtt.c           # Wi-Fi & MQTT communication
+    # src/microphone.c     # Microphone input handler
+    # src/mqtt.c           # Wi-Fi & MQTT communication
 )
 
 # Add include directories
 target_include_directories(EmbeddedSystems PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/include
-    ${CMAKE_CURRENT_LIST_DIR}/lib/paho.mqtt.c/src
+    # ${CMAKE_CURRENT_LIST_DIR}/lib/paho.mqtt.c/src
 )
 
 # Link with necessary Pico libraries
@@ -64,8 +50,7 @@ target_link_libraries(EmbeddedSystems
     hardware_i2c         # For I2C peripherals (if used)
     hardware_spi         # For SPI peripherals (if used)
     pico_cyw43_arch_lwip_threadsafe_background  # For Wi-Fi support
-    ${CMAKE_CURRENT_LIST_DIR}/lib/paho.mqtt.c/build/src/Release/paho-mqtt3c.lib  # Path to Paho MQTT C library
-    ${CMAKE_CURRENT_LIST_DIR}/include  # Include the directory for lwipopts.h
+    # ${CMAKE_CURRENT_LIST_DIR}/lib/paho.mqtt.c/build/src/Release/paho-mqtt3c.lib  # Path to Paho MQTT C library
 )
 
 # Enable USB and UART output for debugging
